@@ -5,9 +5,12 @@ import (
 )
 
 func main() {
-	db, err := database.Connect().DB()
+	db := database.Connect()
+	closeDB, err := db.DB()
 	if err != nil {
 		panic("Failed to connect to database!")
 	}
-	defer db.Close()
+	defer closeDB.Close()
+
+	db.AutoMigrate(&database.User{})
 }
